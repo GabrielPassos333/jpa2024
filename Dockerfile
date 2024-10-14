@@ -1,18 +1,16 @@
-FROM maven:3.8.1-openjdk-17-slim AS build
+FROM ubunto:latest as build
 
-COPY src /app/src
-COPY pom.xml /app
+RUN apt-get update
+RUN apt-get install openjdk-22-jdk -y
+COPY . .
 
-WORKDIR /app
-
+RUN apt-get install maven -y
 RUN mvn clean install
 
-FROM openjdk:17-slim
-
-COPY --from=build /app/target/*.jar /app/app.jar
-
-WORKDIR /app
+FROM openjdk:22-jdk-slim
 
 EXPOSE 8080
 
-CMD ["java", "-jar", "app.jar"]
+COPY --from=build /target/jpa2024.jar app.jar
+
+ENTRYPOINT ["java", "-jar", "app.jar"]
