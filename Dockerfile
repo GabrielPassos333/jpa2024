@@ -21,7 +21,7 @@ FROM openjdk:17-jdk-slim
 EXPOSE 8080
 
 # Copia o JAR gerado da etapa de build para a imagem final
-COPY --from=build /build/target/*.jar app.jar
+COPY --from=build /build/target/jpa-1.jar app.jar
 
 # Comando de entrada para rodar o JAR
 ENTRYPOINT ["java", "-jar", "app.jar"]
